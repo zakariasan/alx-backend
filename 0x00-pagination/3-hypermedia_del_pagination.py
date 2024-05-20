@@ -2,8 +2,15 @@
 """ Pagination """
 
 import csv
-import math
 from typing import List, Dict, Tuple
+
+
+def index_range(page: int, page_size: int) -> Tuple[int, int]:
+    """ The function should return a tuple """
+
+    s_index = (page - 1) * page_size
+    e_index = s_index + page_size
+    return s_index, e_index
 
 
 class Server:
@@ -19,7 +26,7 @@ class Server:
             with open(self.DATA_FILE) as file:
                 reader = csv.reader(file)
                 data = [row for row in reader]
-            self.__dataset = data[1:]  # Skip the header row
+            self.__dataset = data[1:]
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
@@ -27,7 +34,8 @@ class Server:
         assert isinstance(
             page, int) and page > 0, "Page number must be a positive integer."
         assert isinstance(
-            page_size, int) and page_size > 0, "Page size must be a positive integer."
+            page_size,
+            int) and page_size > 0, "Page size must be a positive integer."
 
         start_index, end_index = index_range(page, page_size)
         data = self.dataset()
@@ -36,8 +44,9 @@ class Server:
 
         return data[start_index:end_index]
 
-    def get_hyper_index(self, start_index: int = 0, page_size: int = 10) -> Dict:
-        """Retrieve hypermedia pagination info starting from a specific index."""
+    def get_hyper_index(self,
+                        start_index: int = 0, page_size: int = 10) -> Dict:
+        """Retrieve hypermea pagination info starting from a specific index."""
         data = self.indexed_dataset()
         assert start_index >= 0 and start_index <= max(
             data.keys()), "Start index out of range."

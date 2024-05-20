@@ -3,7 +3,15 @@
 
 import csv
 import math
-from typing import List, Dict, Any
+from typing import List, Tuple, Dict, Any
+
+
+def index_range(page: int, page_size: int) -> Tuple[int, int]:
+    """ The function should return a tuple """
+
+    s_index = (page - 1) * page_size
+    e_index = s_index + page_size
+    return s_index, e_index
 
 
 class Server:
@@ -21,7 +29,7 @@ class Server:
             with open(self.DATA_FILE) as f:
                 reader = csv.reader(f)
                 dataset = [row for row in reader]
-            self.__dataset = dataset[1:]  # Skip the header row
+            self.__dataset = dataset[1:]
 
         return self.__dataset
 
@@ -29,14 +37,13 @@ class Server:
         """Get a page from the dataset.
 
         Args:
-        page (int): The current page number (1-indexed).
-        page_size (int): The number of items per page.
-
-        Returns:
         List[List]: A list of rows corresponding to the requested page.
         """
-        assert isinstance(page, int) and page > 0, "Page must be a positive integer."
-        assert isinstance(page_size, int) and page_size > 0, "Page size must be a positive integer."
+        assert isinstance(
+            page, int) and page > 0, "Page must be a positive integer."
+        assert isinstance(
+            page_size,
+            int) and page_size > 0, "Page size must be a positive integer."
 
         start_index, end_index = index_range(page, page_size)
         dataset = self.dataset()
@@ -68,5 +75,3 @@ class Server:
             "prev_page": page - 1 if page > 1 else None,
             "total_pages": total_pages,
         }
-
-
