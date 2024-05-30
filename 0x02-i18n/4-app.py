@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-"""
-Task 4: Force locale with URL parameter
-"""
+"""main flask """
 
 from flask import Flask, render_template, request
 from flask_babel import Babel
 
 
 class Config:
-    """Configuration class for the Flask app."""
+    """Flask app."""
     DEBUG = True
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
@@ -23,28 +21,16 @@ babel = Babel(app)
 
 @babel.localeselector
 def get_locale() -> str:
-    """
-    Determine the best match for supported languages from the request or U.
-
-    Returns:
-        str: The best match language code.
-    """
-    # Check if a 'locale' parameter is provided in the URL
+    """ check if all is fine"""
     locale = request.args.get('locale')
     if locale in app.config['LANGUAGES']:
         return locale
-    # Default to the best match from the request's Accept-Language headers
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
 @app.route('/')
 def index() -> str:
-    """
-    Render the homepage.
-
-    Returns:
-        str: Rendered HTML content of the homepage.
-    """
+    """Render the homepage."""
     return render_template("4-index.html")
 
 

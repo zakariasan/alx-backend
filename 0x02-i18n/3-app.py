@@ -6,7 +6,7 @@ from flask_babel import Babel
 
 
 class Config:
-    """Configuration class for the Flask app."""
+    """the Flask app."""
     DEBUG = True
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
@@ -21,7 +21,7 @@ babel = Babel(app)
 
 @babel.localeselector
 def get_locale() -> str:
-    """ Determine the best match for supported languages from the request."""
+    """ supported languages from the request."""
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
